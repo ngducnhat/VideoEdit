@@ -69,7 +69,13 @@
     <Compile Include="Assets\Nexweron\Nexweron\WebCamPlayer\Editor\WebCamPlayerEditor.cs" />
     <Compile Include="Assets\Nexweron\Nexweron\WebCamPlayer\Editor\WebCamStreamEditor.cs" />
     <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>C:/Users/nhat/Documents/VideoEdit/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+      <HintPath>C:/Users/nhat/Documents/Unity/VideoEdit/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.TextMeshPro.Editor">
+      <HintPath>C:/Users/nhat/Documents/Unity/VideoEdit/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>C:/Users/nhat/Documents/Unity/VideoEdit/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -319,6 +325,18 @@
     </Reference>
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
+    </Reference>
+    <Reference Include="Ookii.Dialogs">
+      <HintPath>C:/Users/nhat/Documents/Unity/VideoEdit/Assets/StandaloneFileBrowser/Plugins/Ookii.Dialogs.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <HintPath>C:/Users/nhat/Documents/Unity/VideoEdit/Assets/StandaloneFileBrowser/Plugins/System.Windows.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="DOTweenEditor">
+      <HintPath>C:/Users/nhat/Documents/Unity/VideoEdit/Assets/Demigiant/DOTween/Editor/DOTweenEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="DOTween">
+      <HintPath>C:/Users/nhat/Documents/Unity/VideoEdit/Assets/Demigiant/DOTween/DOTween.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>

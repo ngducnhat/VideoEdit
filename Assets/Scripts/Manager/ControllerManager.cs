@@ -5,9 +5,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using UnityEngine.Video;
+using SFB;
 
 public class ControllerManager : MonoBehaviour {
-    [SerializeField]private InputField videoInput;
+    [SerializeField] private InputField videoInput;
     private string videoInputPath;
     [SerializeField] private InputField backgroundInput;
     private string backgroundInputPath;
@@ -15,6 +16,8 @@ public class ControllerManager : MonoBehaviour {
     [SerializeField] private VideoPlayer videoPlayer;
     [SerializeField] private RenderTexture videoPlayerTexture;
     [SerializeField] private RawImage videoPlayerViewport;
+    [SerializeField] private GameObject controllerPopup;
+    [SerializeField] private Text hideBtnText;
 
     private void Awake()
     {
@@ -24,28 +27,33 @@ public class ControllerManager : MonoBehaviour {
     }
     public void OnVideoInputClick()
     {
-        videoInputPath = EditorUtility.OpenFilePanel("Choose your video", "", "");
-        videoInput.text = videoInputPath.Split('/').Last();
+        string[] tempArray = StandaloneFileBrowser.OpenFilePanel("Choose your video", PlayerPrefs.GetString("videoInputOldPath"), "", false);
+        if (tempArray.Length > 0)
+        {
+            videoInputPath = tempArray[0];
+            videoInput.text = videoInputPath.Split('\\').Last();
+            PlayerPrefs.SetString("videoInputOldPath", videoInputPath.Remove(videoInputPath.Length - videoInput.text.Length));
+        }
     }
 
     public void OnBackgroundInputClick()
     {
-        backgroundInputPath = EditorUtility.OpenFilePanel("Choose your background", "", "");
-        backgroundInput.text = backgroundInputPath.Split('/').Last();
-        Texture2D tempTexture = (new WWW(backgroundInputPath)).texture;
-        if (tempTexture == null)
+        string[] tempArray = StandaloneFileBrowser.OpenFilePanel("Choose your background", PlayerPrefs.GetString("backgroundInputOldPath"), "", false);
+        if (tempArray.Length > 0)
         {
-            EditorUtility.DisplayDialog("Warning", "Please choose correct background image format!", "OK");
-        } else
-        {
+            backgroundInputPath = tempArray[0];
+            backgroundInput.text = backgroundInputPath.Split('\\').Last();
+            PlayerPrefs.SetString("backgroundInputOldPath", backgroundInputPath.Remove(backgroundInputPath.Length - backgroundInput.text.Length));
+            Texture2D tempTexture = (new WWW(backgroundInputPath)).texture;
             backgroundImage.texture = tempTexture;
         }
     }
 
     public void OnPlayBtnClick()
     {
-        if (videoInput == null || videoInputPath == "" || videoInputPath == string.Empty)
+        if (videoInputPath == null || videoInputPath == "" || videoInputPath == string.Empty)
         {
+            Utils.Instance.ShowAlert("Please choose video!");
             return;
         }
         videoPlayer.url = videoInputPath;
@@ -58,6 +66,24 @@ public class ControllerManager : MonoBehaviour {
         videoPlayer.Stop();
         videoPlayerTexture.Release();
         backgroundImage.color = Color.black;
+    }
+
+    public void OnQuitBtnClick()
+    {
+        Application.Quit();
+    }
+
+    public void OnHideBtnClick()
+    {
+        if (controllerPopup.activeSelf == true)
+        {
+            hideBtnText.text = "Show";
+            controllerPopup.SetActive(false);
+        } else
+        {
+            hideBtnText.text = "Hide";
+            controllerPopup.SetActive(true);
+        }
     }
 
     public void VideoPlay(VideoPlayer player)
