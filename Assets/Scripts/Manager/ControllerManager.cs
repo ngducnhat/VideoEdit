@@ -18,6 +18,7 @@ public class ControllerManager : MonoBehaviour {
     [SerializeField] private RawImage videoPlayerViewport;
     [SerializeField] private GameObject controllerPopup;
     [SerializeField] private Text hideBtnText;
+    [SerializeField] private GameObject extraSettingsPopup;
 
     private void Awake()
     {
@@ -84,6 +85,11 @@ public class ControllerManager : MonoBehaviour {
             hideBtnText.text = "Hide";
             controllerPopup.SetActive(true);
         }
+    }
+
+    public void OnExtraSettingsBtnClick()
+    {
+        extraSettingsPopup.SetActive(!extraSettingsPopup.activeSelf);
     }
 
     public void VideoPlay(VideoPlayer player)

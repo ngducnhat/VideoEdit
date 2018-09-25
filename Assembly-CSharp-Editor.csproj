@@ -64,6 +64,7 @@
     <Compile Include="Assets\AVProLiveCamera\Editor\AVProLiveCameraEditor.cs" />
     <Compile Include="Assets\AVProLiveCamera\Editor\AVProLiveCameraManagerEditor.cs" />
     <Compile Include="Assets\AVProLiveCamera\Editor\AVProLiveCameraUGUIComponentEditor.cs" />
+    <Compile Include="Assets\HSVPicker\Editor\BoxSliderEditor.cs" />
     <Compile Include="Assets\Nexweron\Nexweron\Core\MultiShaderKit\MSKBridges\Base\Editor\MSKBridgeBaseEditor.cs" />
     <Compile Include="Assets\Nexweron\Nexweron\Core\MultiShaderKit\MSKComponents\Base\Editor\MSKComponentBaseEditor.cs" />
     <Compile Include="Assets\Nexweron\Nexweron\WebCamPlayer\Editor\WebCamPlayerEditor.cs" />
