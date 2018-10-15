@@ -25,6 +25,7 @@ public class ControllerManager : MonoBehaviour {
         videoPlayerTexture.Release();
         videoPlayerTexture.width = Screen.width;
         videoPlayerTexture.height = Screen.height;
+        extraSettingsPopup.SetActive(false);
     }
     public void OnVideoInputClick()
     {
