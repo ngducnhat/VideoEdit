@@ -63,6 +63,7 @@ public class ExtraSettingsManager : MonoBehaviour {
         alphaPowSlider.value = maskAlphaExpert.alphaPow;
         alphaPowValue.text = alphaPowSlider.value.ToString();
         alphaPowSlider.onValueChanged.AddListener((float value) => { alphaPowValue.text = value.ToString(); });
+
     }
 
     public void OnKeyColorClick()
