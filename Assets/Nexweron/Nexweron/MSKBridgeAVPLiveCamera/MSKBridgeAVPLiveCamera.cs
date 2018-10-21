@@ -5,6 +5,7 @@ public class MSKBridgeAVPLiveCamera : MSKBridgeBase {
 	
 	public AVProLiveCamera avpLiveCamera;
 	public MSKController mskController;
+
 	
 	private void UpdateTexture(Texture texture) {
 		if (sourceTexture != texture) {
