@@ -25,6 +25,7 @@ public class AudioScript : MonoBehaviour
             }
         }
         if (microphone == null) microphone = "Built-in Microphone";
+        Debug.Log("Microphone device: " + microphone);
         UpdateMicrophone();
     }
 
