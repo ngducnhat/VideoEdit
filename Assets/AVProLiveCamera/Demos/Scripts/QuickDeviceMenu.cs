@@ -1,25 +1,55 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 //-----------------------------------------------------------------------------
-// Copyright 2012-2016 RenderHeads Ltd.  All rights reserverd.
+// Copyright 2012-2018 RenderHeads Ltd.  All rights reserverd.
 //-----------------------------------------------------------------------------
 
-namespace RenderHeads.AVPro.LiveCamera.Demos
+namespace RenderHeads.Media.AVProLiveCamera.Demos
 {
 	public class QuickDeviceMenu : MonoBehaviour
 	{
 		public AVProLiveCamera _liveCamera;
 		public AVProLiveCameraManager _liveCameraManager;
 		public GUISkin _guiSkin;
+		private Vector2 _scrollResolutions = Vector2.zero;
+		private bool _isHidden = false;
+
+		private void Update()
+		{
+			if (Input.GetKeyDown(KeyCode.Space))
+			{
+				ToggleVisible();
+			}
+		}
+
+		private void ToggleVisible()
+		{
+			_isHidden = !_isHidden;
+			this.useGUILayout = !_isHidden;		// NOTE: this reduces garbage generation to zero
+		}
 
 		void OnGUI()
 		{
+			if (_isHidden)
+			{
+				return;
+			}
+
 			GUI.skin = _guiSkin;
 
 			if (_liveCameraManager.NumDevices > 0)
 			{
+				GUILayout.BeginArea(new Rect(0f, 0f, Screen.width, Screen.height));
+				if (GUILayout.Button("Press SPACE to hide/show QuickDeviceMenu (improves performance)", GUILayout.ExpandWidth(false)))
+				{
+					ToggleVisible();
+				}
+				GUILayout.EndArea();
+
+				// NOTE: This is just a spacing element to leave space for the above message
+				GUILayout.Label(" ");
+				
 				GUILayout.BeginHorizontal();
 
 				// Select device
@@ -27,13 +57,17 @@ namespace RenderHeads.AVPro.LiveCamera.Demos
 				GUILayout.Button("SELECT DEVICE");
 				for (int i = 0; i < _liveCameraManager.NumDevices; i++)
 				{
+					string name = _liveCameraManager.GetDevice(i).Name;
+
 					GUI.color = Color.white;
-					if (_liveCamera._desiredDeviceIndex == i && _liveCamera.Device != null && _liveCamera.Device.IsRunning)
+					if (_liveCamera.Device != null && _liveCamera.Device.IsRunning)
 					{
-						GUI.color = Color.green;
+						if (_liveCamera.Device.Name == name)
+						{
+							GUI.color = Color.green;
+						}
 					}
 
-					string name = _liveCameraManager.GetDevice(i).Name;
 					if (GUILayout.Button(name))
 					{
 						_liveCamera._deviceSelection = AVProLiveCamera.SelectDeviceBy.Index;
@@ -46,13 +80,12 @@ namespace RenderHeads.AVPro.LiveCamera.Demos
 
 				if (_liveCamera.Device != null && _liveCamera.Device.IsRunning)
 				{
-					//Select resolution
 					GUILayout.BeginVertical();
 					GUILayout.Button("RESOLUTION");
+					_scrollResolutions = GUILayout.BeginScrollView(_scrollResolutions, false, false, GUIStyle.none, GUI.skin.verticalScrollbar);
 					List<string> usedNames = new List<string>(32);
 					for (int i = 0; i < _liveCamera.Device.NumModes; i++)
 					{
-
 						AVProLiveCameraDeviceMode mode = _liveCamera.Device.GetMode(i);
 						string name = string.Format("{0}x{1}", mode.Width, mode.Height);
 						if (!usedNames.Contains(name))
@@ -73,6 +106,7 @@ namespace RenderHeads.AVPro.LiveCamera.Demos
 						}
 					}
 					GUI.color = Color.white;
+					GUILayout.EndScrollView();
 					GUILayout.EndVertical();
 
 					// Select frame rate
@@ -145,6 +179,7 @@ namespace RenderHeads.AVPro.LiveCamera.Demos
 					GUI.color = Color.white;
 					GUILayout.EndVertical();
 				}
+				GUILayout.EndHorizontal();
 			}
 			else
 			{

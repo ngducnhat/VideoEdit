@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Nexweron.Core.MSK;
+using RenderHeads.Media.AVProLiveCamera;
 
 public class MSKBridgeAVPLiveCamera : MSKBridgeBase {
 	

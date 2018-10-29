@@ -1,45 +1,57 @@
 using UnityEngine;
-using System.Collections;
 
 //-----------------------------------------------------------------------------
-// Copyright 2012-2015 RenderHeads Ltd.  All rights reserverd.
+// Copyright 2012-2018 RenderHeads Ltd.  All rights reserverd.
 //-----------------------------------------------------------------------------
 
-[AddComponentMenu("AVPro Live Camera/Mesh Apply")]
-public class AVProLiveCameraMeshApply : MonoBehaviour 
+namespace RenderHeads.Media.AVProLiveCamera
 {
-	public MeshRenderer _mesh;
-	public AVProLiveCamera _liveCamera;
-	
-	void Start()
+	[AddComponentMenu("AVPro Live Camera/Mesh Apply")]
+	public class AVProLiveCameraMeshApply : MonoBehaviour
 	{
-		if (_liveCamera != null && _liveCamera.OutputTexture != null)
+		public MeshRenderer _mesh;
+		public AVProLiveCamera _liveCamera;
+		private Texture _lastTexture;
+
+		void Start()
 		{
-			ApplyMapping(_liveCamera.OutputTexture);
-		}
-	}
-	
-	void Update()
-	{
-		if (_liveCamera != null && _liveCamera.OutputTexture != null)
-		{
-			ApplyMapping(_liveCamera.OutputTexture);
-		}
-	}
-	
-	private void ApplyMapping(Texture texture)
-	{
-		if (_mesh != null)
-		{
-			foreach (Material m in _mesh.materials)
+			if (_liveCamera != null && _liveCamera.OutputTexture != null)
 			{
-				m.mainTexture = texture;
+				ApplyMapping(_liveCamera.OutputTexture);
 			}
 		}
-	}
-	
-	public void OnDisable()
-	{
-		ApplyMapping(null);
+
+		void Update()
+		{
+			if (_liveCamera != null && _liveCamera.OutputTexture != null)
+			{
+				ApplyMapping(_liveCamera.OutputTexture);
+			}
+			else
+			{
+				ApplyMapping(null);
+			}
+		}
+
+		private void ApplyMapping(Texture texture)
+		{
+			if (_lastTexture != texture)
+			{
+				if (_mesh != null)
+				{
+					Material[] materials = _mesh.materials;
+					for (int i = 0; i < materials.Length; i++)
+					{
+						materials[i].mainTexture = texture;
+					}
+				}
+				_lastTexture = texture;
+			}
+		}
+
+		public void OnDisable()
+		{
+			ApplyMapping(null);
+		}
 	}
 }

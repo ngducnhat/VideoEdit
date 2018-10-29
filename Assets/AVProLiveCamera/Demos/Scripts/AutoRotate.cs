@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 
-namespace RenderHeads.AVPro.LiveCamera.Demos
+//-----------------------------------------------------------------------------
+// Copyright 2012-2018 RenderHeads Ltd.  All rights reserverd.
+//-----------------------------------------------------------------------------
+
+namespace RenderHeads.Media.AVProLiveCamera.Demos
 {
 	[RequireComponent(typeof(Transform))]
 	public class AutoRotate : MonoBehaviour

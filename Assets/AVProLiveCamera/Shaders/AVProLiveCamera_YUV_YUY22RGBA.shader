@@ -21,6 +21,7 @@ CGPROGRAM
 //#pragma fragmentoption ARB_precision_hint_fastest
 #pragma fragmentoption ARB_precision_hint_nicest
 #pragma multi_compile SWAP_RED_BLUE_ON SWAP_RED_BLUE_OFF
+#pragma multi_compile HORIZONTAL_FLIP_ON HORIZONTAL_FLIP_OFF
 #pragma multi_compile AVPRO_GAMMACORRECTION AVPRO_GAMMACORRECTION_OFF
 #include "UnityCG.cginc"
 #include "AVProLiveCamera_Shared.cginc"
@@ -72,6 +73,11 @@ float4 frag (v2f i) : COLOR
 #if defined(SWAP_RED_BLUE_ON)
 	col = col.bgra;
 #endif
+
+#if defined(HORIZONTAL_FLIP_ON)
+	col = col.bgra;
+#endif
+
 	//yuyv
 	float y = col.z;
 	float u = col.y;

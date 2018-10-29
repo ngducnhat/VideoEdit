@@ -1,42 +1,53 @@
 using UnityEngine;
-using System.Collections;
 
 //-----------------------------------------------------------------------------
-// Copyright 2012-2015 RenderHeads Ltd.  All rights reserverd.
+// Copyright 2012-2018 RenderHeads Ltd.  All rights reserverd.
 //-----------------------------------------------------------------------------
 
-[AddComponentMenu("AVPro Live Camera/Material Apply")]
-public class AVProLiveCameraMaterialApply : MonoBehaviour 
+namespace RenderHeads.Media.AVProLiveCamera
 {
-	public Material _material;
-	public AVProLiveCamera _liveCamera;
-	
-	void Start()
+	[AddComponentMenu("AVPro Live Camera/Material Apply")]
+	public class AVProLiveCameraMaterialApply : MonoBehaviour
 	{
-		if (_liveCamera != null && _liveCamera.OutputTexture != null)
+		public Material _material;
+		public AVProLiveCamera _liveCamera;
+		private Texture _lastTexture;
+
+		void Start()
 		{
-			ApplyMapping(_liveCamera.OutputTexture);
+			if (_liveCamera != null && _liveCamera.OutputTexture != null)
+			{
+				ApplyMapping(_liveCamera.OutputTexture);
+			}
 		}
-	}
-	
-	void Update()
-	{
-		if (_liveCamera != null && _liveCamera.OutputTexture != null)
+
+		void Update()
 		{
-			ApplyMapping(_liveCamera.OutputTexture);
+			if (_liveCamera != null && _liveCamera.OutputTexture != null)
+			{
+				ApplyMapping(_liveCamera.OutputTexture);
+			}
+			else
+			{
+				ApplyMapping(null);
+			}
 		}
-	}
-	
-	private void ApplyMapping(Texture texture)
-	{
-		if (_material != null)
+
+		private void ApplyMapping(Texture texture)
 		{
-			_material.mainTexture = texture;
+			if (_lastTexture != texture)
+			{
+				if (_material != null)
+				{
+					_material.mainTexture = texture;
+				}
+				_lastTexture = texture;
+			}
 		}
-	}
-	
-	public void OnDisable()
-	{
-		ApplyMapping(null);
+
+		public void OnDisable()
+		{
+			ApplyMapping(null);
+		}
 	}
 }
