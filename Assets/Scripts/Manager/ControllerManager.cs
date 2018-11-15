@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using System.Linq;
 using UnityEngine.Video;
 using SFB;
+using RenderHeads.Media.AVProLiveCamera;
 
 public class ControllerManager : MonoBehaviour {
     [SerializeField] private InputField videoInput;
@@ -19,6 +20,8 @@ public class ControllerManager : MonoBehaviour {
     [SerializeField] private GameObject controllerPopup;
     [SerializeField] private Text hideBtnText;
     [SerializeField] private GameObject extraSettingsPopup;
+    private AVProLiveCameraDevice device;
+    [SerializeField] private AVProLiveCamera liveCamera;
 
     private void Awake()
     {
@@ -26,6 +29,9 @@ public class ControllerManager : MonoBehaviour {
         videoPlayerTexture.width = Screen.width;
         videoPlayerTexture.height = Screen.height;
         extraSettingsPopup.SetActive(false);
+        videoPlayerViewport.color = new Color(videoPlayerViewport.color.r, videoPlayerViewport.color.g, videoPlayerViewport.color.b, 0f);
+
+
     }
     public void OnVideoInputClick()
     {
@@ -53,21 +59,25 @@ public class ControllerManager : MonoBehaviour {
 
     public void OnPlayBtnClick()
     {
-        if (videoInputPath == null || videoInputPath == "" || videoInputPath == string.Empty)
-        {
-            Utils.Instance.ShowAlert("Please choose video!");
-            return;
-        }
-        videoPlayer.url = videoInputPath;
-        videoPlayer.prepareCompleted += VideoPlay;
-        videoPlayer.Prepare();
+        videoPlayerViewport.color = new Color(videoPlayerViewport.color.r, videoPlayerViewport.color.g, videoPlayerViewport.color.b, 1f);
+        liveCamera.Begin();
+        //if (videoInputPath == null || videoInputPath == "" || videoInputPath == string.Empty)
+        //{
+        //    Utils.Instance.ShowAlert("Please choose video!");
+        //    return;
+        //}
+        //videoPlayer.url = videoInputPath;
+        //videoPlayer.prepareCompleted += VideoPlay;
+        //videoPlayer.Prepare();
     }
 
     public void OnStopBtnClick()
     {
-        videoPlayer.Stop();
-        videoPlayerTexture.Release();
-        backgroundImage.color = Color.black;
+        videoPlayerViewport.color = new Color(videoPlayerViewport.color.r, videoPlayerViewport.color.g, videoPlayerViewport.color.b, 0f);
+        liveCamera.StopAllCoroutines();
+        //videoPlayer.Stop();
+        //videoPlayerTexture.Release();
+        //backgroundImage.color = Color.black;
     }
 
     public void OnQuitBtnClick()
@@ -81,6 +91,7 @@ public class ControllerManager : MonoBehaviour {
         {
             hideBtnText.text = "Show";
             controllerPopup.SetActive(false);
+            extraSettingsPopup.SetActive(false);
         } else
         {
             hideBtnText.text = "Hide";
