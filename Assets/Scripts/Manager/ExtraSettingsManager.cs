@@ -5,11 +5,13 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ExtraSettingsManager : MonoBehaviour {
+    [SerializeField] private ControllerManager controllerManager;
     [SerializeField] private ColorPicker picker;
     [SerializeField] private Image keyColorImage;
     [SerializeField] private ChromaKey_Alpha_General chromaKeyAlphaGeneral;
     [SerializeField] private Blur_General blurGeneral;
     [SerializeField] private MaskAlpha_Expert maskAlphaExpert;
+    [SerializeField] private Dropdown cameraDropdown;
     //SLider
     [SerializeField] private Slider dChromaSlider;
     [SerializeField] private Text dChromaValue;
@@ -28,9 +30,15 @@ public class ExtraSettingsManager : MonoBehaviour {
     [SerializeField] private Slider alphaPowSlider;
     [SerializeField] private Text alphaPowValue;
 
+
     void Start () {
         picker.onValueChanged.AddListener(OnKeyColorChanged);
         picker.CurrentColor = Color.green;
+        cameraDropdown.AddOptions(controllerManager.listCameraDevices);
+        if (PlayerPrefs.HasKey("CurrentCameraIndex"))
+        {
+            cameraDropdown.value = PlayerPrefs.GetInt("CurrentCameraIndex");
+        }
 
         dChromaSlider.value = chromaKeyAlphaGeneral.dChroma;
         dChromaValue.text = dChromaSlider.value.ToString();
@@ -64,6 +72,12 @@ public class ExtraSettingsManager : MonoBehaviour {
         alphaPowValue.text = alphaPowSlider.value.ToString();
         alphaPowSlider.onValueChanged.AddListener((float value) => { alphaPowValue.text = value.ToString(); });
 
+    }
+
+    public void OnCameraChanged(int index)
+    {
+        PlayerPrefs.SetInt("CurrentCameraIndex", index);
+        controllerManager.CurrentCameraIndex = index;
     }
 
     public void OnKeyColorClick()

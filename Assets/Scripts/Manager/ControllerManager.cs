@@ -22,6 +22,22 @@ public class ControllerManager : MonoBehaviour {
     [SerializeField] private GameObject extraSettingsPopup;
     private AVProLiveCameraDevice device;
     [SerializeField] private AVProLiveCamera liveCamera;
+    [SerializeField] public AVProLiveCameraManager liveCameraManager;
+
+    public List<string> listCameraDevices;
+
+    private int currentCameraIndex;
+    public int CurrentCameraIndex
+    {
+        get
+        {
+            return currentCameraIndex;
+        }
+        set
+        {
+            currentCameraIndex = value;
+        }
+    }
 
     private void Awake()
     {
@@ -30,8 +46,16 @@ public class ControllerManager : MonoBehaviour {
         videoPlayerTexture.height = Screen.height;
         extraSettingsPopup.SetActive(false);
         videoPlayerViewport.color = new Color(videoPlayerViewport.color.r, videoPlayerViewport.color.g, videoPlayerViewport.color.b, 0f);
+    }
 
-
+    private void Start()
+    {
+        listCameraDevices = new List<string>();
+        Debug.Log("==========NumDevices=========" + liveCameraManager.NumDevices);
+        for (int i = 0; i < liveCameraManager.NumDevices; i++)
+        {
+            listCameraDevices.Add(liveCameraManager.GetDevice(i).Name);
+        }
     }
     public void OnVideoInputClick()
     {
@@ -60,6 +84,8 @@ public class ControllerManager : MonoBehaviour {
     public void OnPlayBtnClick()
     {
         videoPlayerViewport.color = new Color(videoPlayerViewport.color.r, videoPlayerViewport.color.g, videoPlayerViewport.color.b, 1f);
+        liveCamera._deviceSelection = AVProLiveCamera.SelectDeviceBy.Index;
+        liveCamera._desiredDeviceIndex = currentCameraIndex;
         liveCamera.Begin();
         //if (videoInputPath == null || videoInputPath == "" || videoInputPath == string.Empty)
         //{
