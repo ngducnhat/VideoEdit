@@ -101,6 +101,7 @@ public class ControllerManager : MonoBehaviour {
     {
         videoPlayerViewport.color = new Color(videoPlayerViewport.color.r, videoPlayerViewport.color.g, videoPlayerViewport.color.b, 0f);
         liveCamera.StopAllCoroutines();
+        device.Close();
         //videoPlayer.Stop();
         //videoPlayerTexture.Release();
         //backgroundImage.color = Color.black;
@@ -138,6 +139,13 @@ public class ControllerManager : MonoBehaviour {
         backgroundImage.color = Color.white;
         player.prepareCompleted -= VideoPlay;
         player.Play();
+    }
+
+    public void SetCurrentCamera(int index)
+    {
+        PlayerPrefs.SetInt("CurrentCameraIndex", index);
+        CurrentCameraIndex = index;
+        device = liveCameraManager.GetDevice(index);
     }
 }
 

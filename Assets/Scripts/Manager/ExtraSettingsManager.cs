@@ -76,8 +76,7 @@ public class ExtraSettingsManager : MonoBehaviour {
 
     public void OnCameraChanged(int index)
     {
-        PlayerPrefs.SetInt("CurrentCameraIndex", index);
-        controllerManager.CurrentCameraIndex = index;
+        controllerManager.SetCurrentCamera(index);
     }
 
     public void OnKeyColorClick()
