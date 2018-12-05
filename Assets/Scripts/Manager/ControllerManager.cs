@@ -80,10 +80,10 @@ public class ControllerManager : MonoBehaviour {
         AudioSource = GetComponent<AudioSource>();
 
         //Get all available microphone
-        foreach (string device in Microphone.devices)
+        foreach (string micro_device in Microphone.devices)
         {
-            //Debug.Log("Found microphone device: " + device);
-            listAudioDevices.Add(device);
+            //Debug.Log("Found microphone device: " + micro_device);
+            listAudioDevices.Add(micro_device);
         }
     }
     public void OnVideoInputClick()
@@ -136,6 +136,7 @@ public class ControllerManager : MonoBehaviour {
     {
         videoPlayerViewport.color = new Color(videoPlayerViewport.color.r, videoPlayerViewport.color.g, videoPlayerViewport.color.b, 0f);
         liveCamera.StopAllCoroutines();
+        //device.Close();
         //videoPlayer.Stop();
         //videoPlayerTexture.Release();
         //backgroundImage.color = Color.black;
@@ -176,6 +177,13 @@ public class ControllerManager : MonoBehaviour {
         backgroundImage.color = Color.white;
         player.prepareCompleted -= VideoPlay;
         player.Play();
+    }
+
+    public void SetCurrentCamera(int index)
+    {
+        PlayerPrefs.SetInt("CurrentCameraIndex", index);
+        CurrentCameraIndex = index;
+        device = liveCameraManager.GetDevice(index);
     }
 
     public void UpdateMicrophone()
