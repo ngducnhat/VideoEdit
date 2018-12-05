@@ -24,9 +24,15 @@ public class ControllerManager : MonoBehaviour {
     [SerializeField] private AVProLiveCamera liveCamera;
     [SerializeField] public AVProLiveCameraManager liveCameraManager;
 
+    public string microphone;
+    public AudioSource AudioSource;
+    //[SerializeField] public AudioManager audioManager;
+
     public List<string> listCameraDevices;
+    public List<string> listAudioDevices;
 
     private int currentCameraIndex;
+    private int currentAudioIndex;
     public int CurrentCameraIndex
     {
         get
@@ -39,6 +45,17 @@ public class ControllerManager : MonoBehaviour {
         }
     }
 
+    public int CurrentAudioIndex
+    {
+        get
+        {
+            return currentAudioIndex;
+        }
+        set
+        {
+            currentAudioIndex = value;
+        }
+    }
     private void Awake()
     {
         videoPlayerTexture.Release();
@@ -55,6 +72,18 @@ public class ControllerManager : MonoBehaviour {
         for (int i = 0; i < liveCameraManager.NumDevices; i++)
         {
             listCameraDevices.Add(liveCameraManager.GetDevice(i).Name);
+        }
+
+
+        listAudioDevices = new List<string>();
+
+        AudioSource = GetComponent<AudioSource>();
+
+        //Get all available microphone
+        foreach (string device in Microphone.devices)
+        {
+            //Debug.Log("Found microphone device: " + device);
+            listAudioDevices.Add(device);
         }
     }
     public void OnVideoInputClick()
@@ -95,6 +124,12 @@ public class ControllerManager : MonoBehaviour {
         //videoPlayer.url = videoInputPath;
         //videoPlayer.prepareCompleted += VideoPlay;
         //videoPlayer.Prepare();
+
+        microphone = listAudioDevices[currentAudioIndex];
+        Debug.Log("Current microphone " + microphone);
+        UpdateMicrophone();
+
+
     }
 
     public void OnStopBtnClick()
@@ -104,6 +139,9 @@ public class ControllerManager : MonoBehaviour {
         //videoPlayer.Stop();
         //videoPlayerTexture.Release();
         //backgroundImage.color = Color.black;
+
+        AudioSource.Stop();
+
     }
 
     public void OnQuitBtnClick()
@@ -138,6 +176,23 @@ public class ControllerManager : MonoBehaviour {
         backgroundImage.color = Color.white;
         player.prepareCompleted -= VideoPlay;
         player.Play();
+    }
+
+    public void UpdateMicrophone()
+    {
+        AudioSource.Stop();
+        AudioSource.clip = Microphone.Start(microphone, true, 10, 44100);
+        AudioSource.loop = true;
+
+        if (Microphone.IsRecording(microphone))
+        {
+            while (!(Microphone.GetPosition(microphone) > 0)) { }
+            AudioSource.Play();
+        }
+        else
+        {
+            Debug.Log(microphone + "does not work!");
+        }
     }
 }
 

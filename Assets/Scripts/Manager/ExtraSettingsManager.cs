@@ -12,6 +12,7 @@ public class ExtraSettingsManager : MonoBehaviour {
     [SerializeField] private Blur_General blurGeneral;
     [SerializeField] private MaskAlpha_Expert maskAlphaExpert;
     [SerializeField] private Dropdown cameraDropdown;
+    [SerializeField] private Dropdown audioDropdown;
     //SLider
     [SerializeField] private Slider dChromaSlider;
     [SerializeField] private Text dChromaValue;
@@ -34,10 +35,18 @@ public class ExtraSettingsManager : MonoBehaviour {
     void Start () {
         picker.onValueChanged.AddListener(OnKeyColorChanged);
         picker.CurrentColor = Color.green;
+
         cameraDropdown.AddOptions(controllerManager.listCameraDevices);
         if (PlayerPrefs.HasKey("CurrentCameraIndex"))
         {
             cameraDropdown.value = PlayerPrefs.GetInt("CurrentCameraIndex");
+        }
+
+        //Debug.Log(controllerManager.listAudioDevices[0] + "exist on the list");
+        audioDropdown.AddOptions(controllerManager.listAudioDevices);
+        if (PlayerPrefs.HasKey("CurrentAudioIndex"))
+        {
+            audioDropdown.value = PlayerPrefs.GetInt("CurrentAudioIndex");
         }
 
         dChromaSlider.value = chromaKeyAlphaGeneral.dChroma;
@@ -78,6 +87,12 @@ public class ExtraSettingsManager : MonoBehaviour {
     {
         PlayerPrefs.SetInt("CurrentCameraIndex", index);
         controllerManager.CurrentCameraIndex = index;
+    }
+
+    public void OnAudioChanged(int index)
+    {
+        PlayerPrefs.SetInt("CurrentAudioIndex", index);
+        controllerManager.CurrentAudioIndex = index;
     }
 
     public void OnKeyColorClick()
